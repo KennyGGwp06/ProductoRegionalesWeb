@@ -1,0 +1,461 @@
+/* =============================================
+   LOGIN CSS - Productos Regionales Web
+   Paleta: Púrpura oscuro, índigo, blanco, violeta
+   ============================================= */
+
+/* --- Variables de Color --- */
+:root {
+  --color-bg-dark:        #1a1a3e;   /* Fondo más oscuro: azul-noche */
+  --color-bg-mid:         #2d2b6b;   /* Fondo medio: índigo */
+  --color-bg-light:       #4a4890;   /* Fondo claro: púrpura */
+  --color-accent:         #6c63ff;   /* Acento principal: violeta brillante */
+  --color-accent-dark:    #4f46e5;   /* Acento oscuro: índigo */
+  --color-accent-hover:   #5a50e0;   /* Hover de botón */
+  --color-panel:          #ffffff;   /* Panel del formulario */
+  --color-text-dark:      #2d2b6b;   /* Texto oscuro (sobre panel blanco) */
+  --color-text-muted:     #7c7a9e;   /* Texto atenuado */
+  --color-input-border:   #d5d3f0;   /* Borde inputs */
+  --color-input-focus:    #6c63ff;   /* Borde focus */
+  --color-star:           #ffffff;   /* Estrellas */
+  --color-moon:           #ffffcc;   /* Luna */
+  --color-underline:      #6c63ff;   /* Subrayado del título */
+  --font-main: 'Poppins', 'Segoe UI', sans-serif;
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-bg-dark) 0%, var(--color-bg-mid) 50%, var(--color-bg-light) 100%);
+  overflow: hidden;
+  position: relative;
+}
+
+/* --- Estrellas decorativas (fondo) --- */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 10%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 30%, rgba(255,255,255,0.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 60% 15%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 25%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 10%, rgba(255,255,255,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 75%, rgba(255,255,255,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 55%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 65%, rgba(255,255,255,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.4) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Contenedor principal del login --- */
+.login-wrapper {
+  display: flex;
+  width: 860px;
+  max-width: 95vw;
+  min-height: 520px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(26, 26, 62, 0.6), 0 0 0 1px rgba(108, 99, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.7s ease both;
+}
+
+/* --- Panel izquierdo: Ilustración nocturna --- */
+.login-illustration {
+  flex: 1 1 55%;
+  background: linear-gradient(160deg, var(--color-bg-dark) 0%, var(--color-bg-mid) 60%, #3b3899 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  overflow: hidden;
+  padding-bottom: 0;
+}
+
+/* Luna */
+.login-illustration::before {
+  content: '';
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffee 60%, rgba(255,255,200,0.3) 100%);
+  box-shadow: 0 0 30px 15px rgba(255,255,200,0.25), 0 0 60px 25px rgba(255,255,200,0.1);
+  animation: moonPulse 4s ease-in-out infinite;
+}
+
+/* Montañas / paisaje oscuro */
+.illustration-mountains {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 55%;
+}
+
+.mountain {
+  position: absolute;
+  bottom: 0;
+}
+
+.mountain-1 {
+  left: -5%;
+  width: 0;
+  height: 0;
+  border-left: 130px solid transparent;
+  border-right: 110px solid transparent;
+  border-bottom: 220px solid #22204f;
+}
+
+.mountain-2 {
+  left: 15%;
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 90px solid transparent;
+  border-bottom: 180px solid #1c1a47;
+}
+
+.mountain-3 {
+  right: -5%;
+  width: 0;
+  height: 0;
+  border-left: 120px solid transparent;
+  border-right: 80px solid transparent;
+  border-bottom: 200px solid #201e4e;
+}
+
+/* Torre de agua estilo pixelart/flat */
+.water-tower {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-40%);
+  z-index: 2;
+}
+
+.tower-tank {
+  width: 50px;
+  height: 32px;
+  background: #3d3b80;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+.tower-windows {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 6px 0;
+}
+
+.tower-window {
+  width: 7px;
+  height: 7px;
+  background: rgba(255,255,200,0.85);
+  border-radius: 1px;
+  box-shadow: 0 0 6px 2px rgba(255,255,200,0.4);
+}
+
+.tower-legs {
+  display: flex;
+  justify-content: space-between;
+  width: 60px;
+  margin: 0 auto;
+}
+
+.tower-leg {
+  width: 5px;
+  height: 60px;
+  background: #2d2b6b;
+  border-radius: 2px;
+}
+
+.tower-base {
+  width: 70px;
+  height: 8px;
+  background: #252360;
+  border-radius: 2px;
+  margin: 0 auto;
+}
+
+/* Segunda torre más pequeña */
+.water-tower-sm {
+  position: absolute;
+  bottom: 130px;
+  left: 22%;
+  z-index: 2;
+}
+
+.water-tower-sm .tower-tank {
+  width: 38px;
+  height: 24px;
+  background: #322f72;
+}
+
+.water-tower-sm .tower-windows {
+  padding: 6px 5px 0;
+}
+
+.water-tower-sm .tower-window {
+  width: 6px;
+  height: 6px;
+}
+
+.water-tower-sm .tower-legs {
+  width: 46px;
+}
+
+.water-tower-sm .tower-leg {
+  height: 44px;
+  width: 4px;
+  background: #27256b;
+}
+
+.water-tower-sm .tower-base {
+  width: 54px;
+  height: 6px;
+  background: #201e55;
+}
+
+/* Suelo / terreno */
+.illustration-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 110px;
+  background: linear-gradient(180deg, #252260 0%, #1a1840 100%);
+  clip-path: polygon(0 35%, 15% 20%, 35% 40%, 55% 15%, 75% 35%, 90% 20%, 100% 30%, 100% 100%, 0 100%);
+}
+
+/* --- Panel derecho: Formulario --- */
+.login-form-panel {
+  flex: 0 0 42%;
+  background: var(--color-panel);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px 40px;
+}
+
+.login-form-panel header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.login-title-underline {
+  width: 45px;
+  height: 3px;
+  background: var(--color-underline);
+  border-radius: 2px;
+  margin-bottom: 14px;
+}
+
+.login-subtitle {
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+/* --- Formulario --- */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-group .input-icon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  pointer-events: none;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 11px 14px 11px 38px;
+  border: 1.5px solid var(--color-input-border);
+  border-radius: 8px;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  color: var(--color-text-dark);
+  background: #f8f8ff;
+  outline: none;
+  transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+
+.input-group input:focus {
+  border-color: var(--color-input-focus);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.12);
+}
+
+.input-group input::placeholder {
+  color: #b8b6d8;
+}
+
+/* --- Opciones: remember + forgot --- */
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+
+.remember-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-label input[type="checkbox"] {
+  accent-color: var(--color-accent);
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.forgot-link {
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.forgot-link:hover {
+  color: var(--color-accent);
+}
+
+/* --- Botón NEXT --- */
+.btn-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--color-accent-dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 20px;
+  font-family: var(--font-main);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 0.25s, transform 0.15s, box-shadow 0.25s;
+  margin-top: 4px;
+}
+
+.btn-login:hover {
+  background: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.btn-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.btn-login:hover .btn-arrow {
+  transform: translateX(4px);
+}
+
+/* --- Enlace de registro --- */
+.register-link-wrap {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.register-link-wrap a {
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.register-link-wrap a:hover {
+  color: var(--color-accent-dark);
+  text-decoration: underline;
+}
+
+/* --- Alertas de error/éxito --- */
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: none;
+}
+
+.alert.show { display: block; }
+
+.alert-error {
+  background: #fde8e8;
+  color: #c0392b;
+  border-left: 3px solid #e74c3c;
+}
+
+.alert-success {
+  background: #e8f5e9;
+  color: #1a7a3a;
+  border-left: 3px solid #27ae60;
+}
+
+/* --- Animaciones --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes moonPulse {
+  0%, 100% { box-shadow: 0 0 30px 15px rgba(255,255,200,0.25), 0 0 60px 25px rgba(255,255,200,0.1); }
+  50%       { box-shadow: 0 0 40px 20px rgba(255,255,200,0.35), 0 0 80px 35px rgba(255,255,200,0.15); }
+}
+
+/* --- Responsive --- */
+@media (max-width: 680px) {
+  .login-illustration { display: none; }
+  .login-wrapper { width: 100%; min-height: 100vh; border-radius: 0; }
+  .login-form-panel { flex: 1; padding: 40px 28px; }
+}

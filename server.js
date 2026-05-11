@@ -1,9 +1,9 @@
-const express   = require('express');
-const path      = require('path');
-const session   = require('express-session');
+const express = require('express');
+const path = require('path');
+const session = require('express-session');
 require('dotenv').config();
-
-const db        = require('./src/config/db');
+const authGuard = require('./src/middlewares/authMiddleware');
+const db = require('./src/config/db');
 const apiRoutes = require('./src/routes/apiRoutes');
 
 const app = express();
@@ -25,9 +25,14 @@ app.use(session({
 app.use('/api', apiRoutes);
 
 // ── Rutas de Vistas ───────────────────────────
-app.get('/',         (req, res) => res.sendFile(path.join(__dirname, 'src/views/login.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'src/views/login.html')));
 app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'src/views/register.html')));
-app.get('/home',     (req, res) => res.sendFile(path.join(__dirname, 'src/views/home.html')));
+// Ruta de Home con protección
+app.get('/home', authGuard, (req, res) => {
+    res.sendFile(path.join(__dirname, 'src/views/home.html'));
+});
+
+
 
 // ── Arranque del servidor ─────────────────────
 const PORT = process.env.PORT || 3000;

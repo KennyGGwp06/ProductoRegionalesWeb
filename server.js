@@ -1,43 +1,48 @@
-const express = require('express');
-const path = require('path');
-const session = require('express-session');
+const express   = require('express');
+const path      = require('path');
+const session   = require('express-session');
 require('dotenv').config();
+
+const db        = require('./src/config/db');
+const apiRoutes = require('./src/routes/apiRoutes');
 
 const app = express();
 
-// Middlewares para leer formularios y JSON
+// ── Middlewares ──────────────────────────────
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-// Servir archivos estáticos (CSS, JS, Imágenes)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configuración de Sesiones (Fundamental para Login)
+// ── Sesiones ─────────────────────────────────
 app.use(session({
-    secret: 'clave_secreta_dona_solina',
+    secret: process.env.SESSION_SECRET || 'clave_secreta_dona_solina',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false,
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 2 }
 }));
 
-// --- RUTAS DE NAVEGACIÓN ---
+// ── Rutas API ─────────────────────────────────
+app.use('/api', apiRoutes);
 
-// Vista inicial: Login
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/login.html'));
-});
+// ── Rutas de Vistas ───────────────────────────
+app.get('/',         (req, res) => res.sendFile(path.join(__dirname, 'src/views/login.html')));
+app.get('/register', (req, res) => res.sendFile(path.join(__dirname, 'src/views/register.html')));
+app.get('/home',     (req, res) => res.sendFile(path.join(__dirname, 'src/views/home.html')));
 
-// Vista de Registro
-app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/register.html'));
-});
-
-// Vista del Dashboard (Home)
-app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/home.html'));
-});
-
-// Encender el servidor
+// ── Arranque del servidor ─────────────────────
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor de Doña Solina corriendo en: http://localhost:${PORT}`);
+
+app.listen(PORT, async () => {
+    console.log(`\n🚀 Servidor corriendo en: http://localhost:${PORT}`);
+
+    // Test de conexión a la base de datos
+    try {
+        const [rows] = await db.query('SELECT 1 AS ok');
+        if (rows[0].ok === 1) {
+            console.log(`✅ BD conectada: ${process.env.DB_NAME} @ ${process.env.DB_HOST}`);
+        }
+    } catch (err) {
+        console.error(`❌ Error de BD: ${err.message}`);
+        console.error(`   → Verifica que MySQL esté activo y que .env tenga los datos correctos.`);
+    }
 });

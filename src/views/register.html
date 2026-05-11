@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Página de registro - Productos Regionales Doña Solina" />
+  <title>Registro | Productos Regionales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="/css/login.css" />
+  <link rel="stylesheet" href="/css/register.css" />
+  <style>
+    /* En la página standalone de registro el wrapper es directo (sin modal) */
+    .login-wrapper { animation: fadeInUp 0.7s ease both; }
+  </style>
+</head>
+<body>
+
+  <main class="login-wrapper" role="main">
+
+    <!-- Panel izquierdo: Ilustración nocturna -->
+    <section class="login-illustration" aria-hidden="true">
+      <div class="illustration-mountains">
+        <div class="mountain mountain-1"></div>
+        <div class="mountain mountain-2"></div>
+        <div class="mountain mountain-3"></div>
+      </div>
+      <div class="water-tower">
+        <div class="tower-tank">
+          <div class="tower-windows">
+            <span class="tower-window"></span>
+            <span class="tower-window"></span>
+            <span class="tower-window"></span>
+          </div>
+        </div>
+        <div class="tower-legs">
+          <span class="tower-leg"></span>
+          <span class="tower-leg"></span>
+          <span class="tower-leg"></span>
+        </div>
+        <div class="tower-base"></div>
+      </div>
+      <div class="water-tower-sm">
+        <div class="tower-tank">
+          <div class="tower-windows">
+            <span class="tower-window"></span>
+            <span class="tower-window"></span>
+          </div>
+        </div>
+        <div class="tower-legs">
+          <span class="tower-leg"></span>
+          <span class="tower-leg"></span>
+          <span class="tower-leg"></span>
+        </div>
+        <div class="tower-base"></div>
+      </div>
+      <div class="illustration-ground"></div>
+    </section>
+
+    <!-- Panel derecho: Formulario de Registro -->
+    <section class="login-form-panel">
+      <header>
+        <h1>JOIN US!</h1>
+        <div class="login-title-underline"></div>
+        <p class="login-subtitle">
+          Crea tu cuenta gratuita<br />
+          y descubre nuestros productos regionales.
+        </p>
+      </header>
+
+      <!-- Alerta -->
+      <div id="register-alert" class="alert alert-error" role="alert" aria-live="polite"></div>
+
+      <form class="login-form" id="register-form" action="/api/auth/register" method="POST" novalidate>
+
+        <!-- Nombre completo -->
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-regular fa-user"></i></span>
+          <input
+            type="text"
+            id="reg-name"
+            name="name"
+            placeholder="nombre completo"
+            autocomplete="name"
+            required
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
+          <input
+            type="email"
+            id="reg-email"
+            name="email"
+            placeholder="correo electrónico"
+            autocomplete="email"
+            required
+          />
+        </div>
+
+        <!-- Contraseña -->
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+          <input
+            type="password"
+            id="reg-password"
+            name="password"
+            placeholder="contraseña"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="input-group">
+          <span class="input-icon"><i class="fa-solid fa-shield-halved"></i></span>
+          <input
+            type="password"
+            id="reg-confirm"
+            name="confirm"
+            placeholder="confirmar contraseña"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <!-- Botón REGISTRAR -->
+        <button type="submit" class="btn-login" id="btn-register">
+          REGISTRAR <span class="btn-arrow">→</span>
+        </button>
+      </form>
+
+      <!-- Volver al login -->
+      <p class="register-link-wrap">
+        ¿Ya tienes cuenta?
+        <a href="/">Iniciar sesión</a>
+      </p>
+    </section>
+
+  </main>
+
+  <script>
+    /* JS mínimo para la página standalone de registro */
+    document.addEventListener('DOMContentLoaded', () => {
+      function showAlert(id, msg, type = 'error') {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg;
+        el.className = `alert alert-${type} show`;
+        setTimeout(() => el.classList.remove('show'), 4000);
+      }
+
+      const form = document.getElementById('register-form');
+      if (form) {
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const name     = document.getElementById('reg-name').value.trim();
+          const email    = document.getElementById('reg-email').value.trim();
+          const password = document.getElementById('reg-password').value;
+          const confirm  = document.getElementById('reg-confirm').value;
+
+          if (!name || !email || !password || !confirm) {
+            return showAlert('register-alert', 'Por favor completa todos los campos.');
+          }
+          if (password !== confirm) {
+            return showAlert('register-alert', 'Las contraseñas no coinciden.');
+          }
+          if (password.length < 6) {
+            return showAlert('register-alert', 'La contraseña debe tener al menos 6 caracteres.');
+          }
+
+          try {
+            const res  = await fetch('/api/auth/register', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email, password })
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+              showAlert('register-alert', '¡Cuenta creada! Redirigiendo...', 'success');
+              setTimeout(() => window.location.href = '/', 1500);
+            } else {
+              showAlert('register-alert', data.message || 'No se pudo crear la cuenta.');
+            }
+          } catch {
+            showAlert('register-alert', 'Error de conexión. Intenta de nuevo.');
+          }
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

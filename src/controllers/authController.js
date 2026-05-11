@@ -2,7 +2,7 @@
    authController.js - Productos Regionales Web
    ================================================ */
 
-const db     = require('../config/db');
+const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 /* ─────────────────────────────────────────────
@@ -35,16 +35,16 @@ const login = async (req, res) => {
         }
 
         // Guardar sesión
-        req.session.userId   = user.id_usuario;
+        req.session.userId = user.id_usuario;
         req.session.userName = user.nombre_user;
-        req.session.userRol  = user.rol;
+        req.session.userRol = user.rol;
 
         return res.status(200).json({
             message: 'Login exitoso.',
             user: {
-                id:     user.id_usuario,
+                id: user.id_usuario,
                 nombre: user.nombre_user,
-                rol:    user.rol
+                rol: user.rol
             }
         });
 
@@ -98,8 +98,9 @@ const register = async (req, res) => {
    GET /api/auth/logout
 ───────────────────────────────────────────── */
 const logout = (req, res) => {
-    req.session.destroy(() => {
-        res.status(200).json({ message: 'Sesión cerrada.' });
+    req.session.destroy((err) => {
+        if (err) return res.status(500).send('Error al cerrar sesión');
+        res.status(200).json({ message: 'Sesión cerrada' });
     });
 };
 

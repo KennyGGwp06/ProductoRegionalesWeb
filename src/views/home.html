@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,13 +11,20 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
     :root {
-      --color-bg-dark:     #1a1a3e;
-      --color-bg-mid:      #2d2b6b;
-      --color-accent:      #6c63ff;
+      --color-bg-dark: #1a1a3e;
+      --color-bg-mid: #2d2b6b;
+      --color-accent: #6c63ff;
       --color-accent-dark: #4f46e5;
       --font-main: 'Poppins', 'Segoe UI', sans-serif;
     }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: var(--font-main);
@@ -30,9 +38,22 @@
       gap: 16px;
     }
 
-    .home-icon { font-size: 4rem; color: var(--color-accent); margin-bottom: 8px; }
-    h1 { font-size: 2rem; font-weight: 700; letter-spacing: 1px; }
-    p  { color: rgba(255,255,255,0.65); font-size: 0.95rem; }
+    .home-icon {
+      font-size: 4rem;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.65);
+      font-size: 0.95rem;
+    }
 
     .btn-logout {
       margin-top: 24px;
@@ -49,9 +70,14 @@
       text-decoration: none;
       transition: background 0.2s, transform 0.15s;
     }
-    .btn-logout:hover { background: var(--color-accent); transform: translateY(-2px); }
+
+    .btn-logout:hover {
+      background: var(--color-accent);
+      transform: translateY(-2px);
+    }
   </style>
 </head>
+
 <body>
   <div class="home-icon"><i class="fa-solid fa-store"></i></div>
   <h1>¡Bienvenido!</h1>
@@ -61,11 +87,18 @@
   </a>
 
   <script>
-    document.getElementById('btn-logout')?.addEventListener('click', async (e) => {
+    document.getElementById('btn-logout').addEventListener('click', async (e) => {
       e.preventDefault();
-      await fetch('/api/auth/logout');
-      window.location.href = '/';
+      try {
+        const res = await fetch('/api/auth/logout');
+        if (res.ok) {
+          window.location.href = '/'; // Regresa al login
+        }
+      } catch (error) {
+        console.error('Error al salir:', error);
+      }
     });
   </script>
 </body>
+
 </html>
